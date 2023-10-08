@@ -58,6 +58,7 @@ class ResultMonitor
 	int currentSize = 0;
 
 public:
+	// Get an array of cars
 	array<Car, DataSize> getCars()
 	{
 		return cars;
@@ -75,18 +76,28 @@ public:
 			}
 			else
 			{
-				int i = currentSize - 1;
-				while (i >= 0 && cars[i].make > newCar.make)
-				{
-					cars[i + 1] = cars[i];
-					i--;
-				}
-				cars[i + 1] = newCar;
+				cars[currentSize] = newCar;
 				currentSize++;
+
+				// Bubble sort by calculated performance score
+				for (int i = 0; i < currentSize - 1; i++)
+				{
+					for (int j = 0; j < currentSize - i - 1; j++)
+					{
+						if (cars[j].performanceScore.getPerformanceScore() > cars[j + 1].performanceScore.getPerformanceScore())
+						{
+							// Swap cars[j] and cars[j + 1]
+							Car temp = cars[j];
+							cars[j] = cars[j + 1];
+							cars[j + 1] = temp;
+						}
+					}
+				}
 			}
 		}
 	}
 
+	//Get array size
 	int getCount()
 	{
 		return currentSize;
