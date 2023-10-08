@@ -11,14 +11,6 @@ using namespace std;
 using json = nlohmann::json;
 const int DataSize = 16;
 
-struct Car {
-	string make;
-	double consumption;
-	int power;
-	string hashCode;
-	PerformanceData performanceScore;
-};
-
 class PerformanceData
 {
 	double performanceScore;
@@ -40,6 +32,14 @@ public:
 	{
 		this->performanceScore = value;
 	}
+};
+
+struct Car {
+	string make;
+	double consumption;
+	int power;
+	string hashCode;
+	PerformanceData performanceScore;
 };
 
 // Function to calculate the performance score
@@ -96,15 +96,37 @@ public:
 class OutputPrinter
 {
 public:
+	// Print initial data to the console
+	static void printInitialDataConsole(const array<Car, DataSize>& cars)
+	{
+		int dashCount = 70;
+
+		cout << "Pradiniai duomenys" << endl;
+		printDashedLineConsole(dashCount);
+
+		cout << left << setw(23) << "| Make" << left << setw(23) << "| Consumption " << left << setw(23) << "| Performance " << "|" << endl;
+		printDashedLineConsole(dashCount);
+
+		for (const auto& car : cars)
+		{
+			cout << "| " << left << setw(20) << car.make
+				<< " | " << left << setw(20) << car.consumption << " | "
+				<< left << setw(20) << car.power << " | " << endl;
+		}
+
+		printDashedLineConsole(dashCount);
+	}
+
+
 	// Print initial data to the output file
 	static void printInitialData(const array<Car, DataSize>& cars, string outputFile)
 	{
 		ofstream output(outputFile);
-
+		int dashCount = 70;
 		output << "Pradiniai duomenys" << endl;
-		printDashedLine(output, 70);
+		printDashedLine(output, dashCount);
 		output << left << setw(23) << "| Make" << left << setw(23) << "| Consumption " << left << setw(23) << "| Performance " << "|" << endl;
-		printDashedLine(output, 70);
+		printDashedLine(output, dashCount);
 
 		for (const auto& car : cars)
 		{
@@ -113,7 +135,7 @@ public:
 				<< left << setw(20) << car.power << " | " << endl;
 		}
 
-		printDashedLine(output, 70);
+		printDashedLine(output, dashCount);
 		output << endl;
 		output.close();
 	}
@@ -122,25 +144,36 @@ public:
 	static void printResults(const array<Car, DataSize>& sortedCars, int count, string outputFile)
 	{
 		ofstream output(outputFile, ios_base::app);
-
+		int dashCount = 136;
 		output << "Rezultatai" << endl;
-		printDashedLine(output, 93);
-		output << left << setw(23) << "| Make" << left << setw(23) << "| Consumption " << left << setw(22) << "| Performance " << left << setw(24) << " | Performance score" << "|" << endl;
-		printDashedLine(output, 93);
+		printDashedLine(output, dashCount);
+		output << left << setw(23) << "| Make" << left << setw(23) << "| Consumption " << left << setw(22) << "| Performance " << left << setw(23) << " | Performance score" << left << setw(44) << " | HashCode" << "|" << endl;
+		printDashedLine(output, dashCount);
 
 		for (int i = 0; i < count; i++)
 		{
 			output << "| " << left << setw(20) << sortedCars[i].make
 				<< " | " << left << setw(20) << sortedCars[i].consumption << " | "
 				<< left << setw(20) << sortedCars[i].power << " | "
-				<< left << setw(20) << sortedCars[i].performanceScore.getPerformanceScore() << " |" << endl;
+				<< left << setw(20) << sortedCars[i].performanceScore.getPerformanceScore() << " | "
+				<< left << setw(40) << sortedCars[i].hashCode << " |" << endl;
 		}
 
-		printDashedLine(output, 93);
+		printDashedLine(output, dashCount);
 		output.close();
 	}
 
 private:
+	// Helper function to print dashes
+	static void printDashedLineConsole(int count)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-";
+		}
+		cout << endl;
+	}
+
 	// Print a dashed line to the output file
 	static void printDashedLine(ofstream& output, int size)
 	{
@@ -196,6 +229,7 @@ int main()
 		cars[i++] = car;
 	}
 
+	OutputPrinter::printInitialDataConsole(cars);
 	OutputPrinter::printInitialData(cars, "rezultatai.txt");
 
 	int size = cars.size();
