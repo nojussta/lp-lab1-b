@@ -1,0 +1,84 @@
+﻿{
+  "cars": [
+    {
+      "make": "Volvo",
+      "consumption": 5.2,
+      "power": 100
+    },
+    {
+      "make": "Opel",
+      "consumption": 4.6,
+      "power": 75
+    },
+    {
+      "make": "Toyota",
+      "consumption": 5.0,
+      "power": 90
+    },
+    {
+      "make": "Ford",
+      "consumption": 6.0,
+      "power": 120
+    },
+    {
+      "make": "Honda",
+      "consumption": 4.8,
+      "power": 85
+    },
+    {
+      "make": "BMW",
+      "consumption": 6.5,
+      "power": 150
+    },
+    {
+      "make": "Mercedes",
+      "consumption": 6.2,
+      "power": 130
+    },
+    {
+      "make": "Audi",
+      "consumption": 5.8,
+      "power": 110
+    },
+    {
+      "make": "Nissan",
+      "consumption": 5.3,
+      "power": 95
+    },
+    {
+      "make": "Hyundai",
+      "consumption": 4.9,
+      "power": 88
+    },
+    {
+      "make": "Kia",
+      "consumption": 5.1,
+      "power": 92
+    },
+    {
+      "make": "Chevrolet",
+      "consumption": 6.3,
+      "power": 105
+    },
+    {
+      "make": "Mazda",
+      "consumption": 5.4,
+      "power": 98
+    },
+    {
+      "make": "Subaru",
+      "consumption": 5.7,
+      "power": 103
+    },
+    {
+      "make": "Lexus",
+      "consumption": 6.8,
+      "power": 155
+    },
+    {
+      "make": "Jeep",
+      "consumption": 7.0,
+      "power": 180
+    }
+  ]
+}
