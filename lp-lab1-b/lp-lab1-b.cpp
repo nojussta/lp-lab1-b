@@ -250,23 +250,35 @@ int main()
 	double sum = 0;
 
 	// Parallel processing using OpenMP
-#pragma omp parallel for num_threads(6) reduction(+:sum)
-	for (int i = 0; i < 6; i++)
+#pragma omp parallel for num_threads(4) reduction(+:sum)
+	for (int i = 0; i < 4; i++)
 	{
-		int thread_id = omp_get_thread_num();
-		int chunk_size = size / 6;
+		int threadNumber = omp_get_thread_num();
+		int chunkSize = size / 4;
+		int leftower_chunks = size % 4;
 
-		int start = thread_id * chunk_size;
-		int end = (thread_id == 5) ? size : start + chunk_size;
+		int start, end;
+
+		if (threadNumber < leftower_chunks) {
+			// This thread processes one extra car
+			start = threadNumber * (chunkSize + 1);
+			end = start + (chunkSize + 1);
+		}
+		else {
+			// This thread processes the regular chunk size
+			start = leftower_chunks * (chunkSize + 1) + (threadNumber - leftower_chunks) * chunkSize;
+			end = start + chunkSize;
+		}
 
 		for (int j = start; j < end; j++)
 		{
 			Car car = cars[j];
-			numbers[numbersIndex++] = processCarData(car, thread_id);
+			numbers[numbersIndex++] = processCarData(car, threadNumber);
 			sum = accumulate(numbers + start, numbers + end, 0,
 				[](double acc, double curr) { return acc + curr; });
 		}
 	}
+
 	cout << sum << endl;
 
 	array<Car, DataSize> sortedCars;
