@@ -245,30 +245,23 @@ int main()
 
 	int size = cars.size();
 
+	int threadCount = size / 4;
+
 	auto numbers = new double[DataSize];
 	int numbersIndex = 0;
 	double sum = 0;
 
 	// Parallel processing using OpenMP
-#pragma omp parallel for num_threads(4) reduction(+:sum)
-	for (int i = 0; i < 4; i++)
+#pragma omp parallel for num_threads(threadCount) reduction(+:sum)
+	for (int i = 0; i < threadCount; i++)
 	{
+		auto totalThreads = omp_get_num_threads();
 		int threadNumber = omp_get_thread_num();
 		int chunkSize = size / 4;
 		int leftower_chunks = size % 4;
 
-		int start, end;
-
-		if (threadNumber < leftower_chunks) {
-			// This thread processes one extra car
-			start = threadNumber * (chunkSize + 1);
-			end = start + (chunkSize + 1);
-		}
-		else {
-			// This thread processes the regular chunk size
-			start = leftower_chunks * (chunkSize + 1) + (threadNumber - leftower_chunks) * chunkSize;
-			end = start + chunkSize;
-		}
+		int start = threadNumber * chunkSize;
+		int end = (threadNumber == totalThreads - 1) ? size : start + chunkSize;
 
 		for (int j = start; j < end; j++)
 		{
